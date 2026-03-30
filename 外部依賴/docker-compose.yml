@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  # 1. AI 核心語言引擎：Ollama (支援 NVIDIA GPU)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: virgo-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./ollama_data:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: "no" # 關閉自動啟動，把系統資源的控制權還給你
+
+  # 2. AI 測試與管理介面：Open WebUI
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: virgo-open-webui
+    ports:
+      - "3000:8080"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+    volumes:
+      - ./open_webui_data:/app/backend/data
+    depends_on:
+      - ollama
+    restart: "no" # 關閉自動啟動
+
+  # 3. RAG 知識大腦 (向量資料庫)：PostgreSQL + pgvector
+  postgres-vector:
+    image: pgvector/pgvector:pg16
+    container_name: virgo-pgvector
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: virgo_rag_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: "no" # 關閉自動啟動
+
+  # 4. 短期記憶與快取：Redis
+  redis-cache:
+    image: redis:7.2-alpine
+    container_name: virgo-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    restart: "no" # 關閉自動啟動
+
+# 定義具名儲存卷
+volumes:
+  pg_data:
+  redis_data:
