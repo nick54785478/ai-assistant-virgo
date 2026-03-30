@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>DeepSeek WebSocket 聊天室</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; }
+        #chat-box { border: 1px solid #ccc; height: 400px; padding: 10px; overflow-y: scroll; margin-bottom: 10px; background: #f9f9f9; }
+        .message { margin-bottom: 10px; line-height: 1.5; }
+        .user { color: blue; font-weight: bold; }
+        .bot { color: green; font-weight: bold; }
+        input[type="text"] { width: 80%; padding: 10px; }
+        button { padding: 10px 15px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h2>AI 聊天助手 (WebSocket 版)</h2>
+    <div id="chat-box"></div>
+    
+    <input type="text" id="message-input" placeholder="輸入你想問的問題..." onkeypress="handleKeyPress(event)">
+    <button onclick="sendMessage()">送出</button>
+
+    <script>
+        // 建立 WebSocket 連線
+        const ws = new WebSocket('ws://localhost:8080/chat-ws');
+        const chatBox = document.getElementById('chat-box');
+        let currentBotMessageDiv = null;
+
+        ws.onopen = () => {
+            appendMessage('系統', 'WebSocket 連線成功！可以開始聊天了。', 'bot');
+        };
+
+        ws.onmessage = (event) => {
+            const token = event.data;
+
+            if (token === '[DONE]') {
+                // AI 回覆結束，準備迎接下一個對話
+                currentBotMessageDiv = null;
+            } else {
+                // 如果是這個回覆的第一個字，建立一個新的 div
+                if (!currentBotMessageDiv) {
+                    currentBotMessageDiv = document.createElement('div');
+                    currentBotMessageDiv.className = 'message';
+                    currentBotMessageDiv.innerHTML = '<span class="bot">DeepSeek: </span><span class="content"></span>';
+                    chatBox.appendChild(currentBotMessageDiv);
+                }
+                // 將即時收到的字串接上去
+                currentBotMessageDiv.querySelector('.content').innerText += token;
+                chatBox.scrollTop = chatBox.scrollHeight; // 自動捲動到底部
+            }
+        };
+
+        function sendMessage() {
+            const input = document.getElementById('message-input');
+            const message = input.value.trim();
+            if (message && ws.readyState === WebSocket.OPEN) {
+                appendMessage('你', message, 'user');
+                ws.send(message); // 透過 WebSocket 送出訊息
+                input.value = '';
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') sendMessage();
+        }
+
+        function appendMessage(sender, text, role) {
+            const div = document.createElement('div');
+            div.className = 'message';
+            div.innerHTML = `<span class="${role}">${sender}: </span><span class="content">${text}</span>`;
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+</body>
+</html>
