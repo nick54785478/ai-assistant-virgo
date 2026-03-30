@@ -1,0 +1,25 @@
+// 確保卡片本身佔滿側邊欄寬度
+:host {
+  display: block;
+  width: 100%;
+}
+
+// 處女座微調：讓 Popover 更有「浮動選單」的精緻感
+:host ::ng-deep {
+  .p-popover {
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); // 增加懸浮陰影
+    border: 1px solid #f3f4f6;
+
+    // 縮小 Popover 預設過大的 padding，讓按鈕更緊湊
+    .p-popover-content {
+      padding: 0.35rem;
+    }
+
+    // 讓選單內的按鈕 hover 時背景更柔和
+    .p-button.p-button-text.p-button-secondary:hover {
+      background-color: #f3f4f6;
+      color: #374151;
+    }
+  }
+}

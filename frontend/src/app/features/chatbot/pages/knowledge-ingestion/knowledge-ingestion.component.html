@@ -1,0 +1,39 @@
+<p-dialog
+  header="領域知識注入 (RAG Ingestion)"
+  [visible]="visible"
+  (visibleChange)="close()"
+  [modal]="true"
+  [style]="{ width: '450px' }"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="knowledge-ingestion-dialog"
+>
+  <div class="flex flex-column gap-3">
+    <div class="text-sm text-gray-500 line-height-3">
+      請上傳專案規範文件 (Word, PDF, Text)，系統將自動進行 **向量化
+      (Vectorization)** 並存入 PostgreSQL。
+    </div>
+
+    <p-fileUpload
+      name="file"
+      [url]="ingestionService.uploadUrl"
+      accept=".docx,.pdf,.txt"
+      maxFileSize="10000000"
+      (onUpload)="onUploadSuccess($event)"
+      (onError)="onUploadError($event)"
+      (onBeforeSend)="onBeforeSend()"
+      chooseLabel="選取文件"
+      uploadLabel="開始注入"
+      cancelLabel="取消"
+      styleClass="w-full"
+    >
+    </p-fileUpload>
+
+    @if (isIngesting) {
+      <div class="flex align-items-center gap-2 text-indigo-600 mt-2">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span class="text-xs font-bold">Virgo 正在吸收新知識...</span>
+      </div>
+    }
+  </div>
+</p-dialog>

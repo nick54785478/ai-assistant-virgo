@@ -1,0 +1,16 @@
+::ng-deep {
+  .v-tag-editor-dialog {
+    .p-dialog-header {
+      border-bottom: 1px solid #f3f4f6;
+      .p-dialog-title {
+        color: #4338ca;
+      }
+    }
+
+    // 確保 Input 聚焦時不會有藍色外框破壞融合感
+    .flex.align-items-stretch input:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+}

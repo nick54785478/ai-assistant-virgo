@@ -1,0 +1,73 @@
+<p-dialog
+  header="編輯收藏標籤"
+  [(visible)]="visible"
+  (onHide)="handleCancel()"
+  [modal]="true"
+  [style]="{ width: '30vw', 'min-width': '400px' }"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="v-tag-editor-dialog"
+>
+  <div class="flex flex-column pt-2">
+    <div class="flex align-items-center gap-2 text-gray-500 mb-2">
+      <i class="pi pi-tags text-xs text-indigo-500"></i>
+      <small>您可以為此收藏增減標籤</small>
+    </div>
+
+    <div
+      class="flex align-items-stretch w-full mt-1 shadow-sm border-round-md overflow-hidden border-1 surface-border"
+    >
+      <input
+        pInputText
+        type="text"
+        [(ngModel)]="currentTag"
+        (keydown.enter)="addTag()"
+        placeholder="新增標籤..."
+        class="flex-grow-1 border-none shadow-none px-3"
+        style="border-radius: 0"
+      />
+      <button
+        pButton
+        type="button"
+        (click)="addTag()"
+        [disabled]="!currentTag.trim()"
+        class="p-button-info flex-none px-4 border-none m-0"
+        style="border-radius: 0"
+      >
+        <i class="pi pi-plus mr-1"></i>
+        <span class="font-bold">新增</span>
+      </button>
+    </div>
+
+    <div
+      class="flex flex-wrap gap-2 mt-3"
+      style="min-height: 80px; max-height: 200px; overflow-y: auto"
+    >
+      @for (tag of tags; track tag) {
+        <p-chip
+          [label]="tag"
+          [removable]="true"
+          (onRemove)="removeTag(tag)"
+          styleClass="bg-indigo-50 text-indigo-600 border-none font-medium"
+        ></p-chip>
+      }
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-end gap-3 pt-2">
+      <p-button
+        label="取消"
+        [text]="true"
+        severity="secondary"
+        (onClick)="handleCancel()"
+      ></p-button>
+      <p-button
+        label="更新標籤"
+        icon="pi pi-check"
+        (onClick)="handleConfirm()"
+        severity="info"
+      ></p-button>
+    </div>
+  </ng-template>
+</p-dialog>

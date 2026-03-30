@@ -1,0 +1,47 @@
+:host ::ng-deep {
+  .v-favorite-dialog {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+
+    .p-dialog-header {
+      padding: 1.5rem 1.5rem 1rem;
+      border-bottom: 1px solid #f3f4f6;
+
+      .p-dialog-title {
+        font-weight: 700;
+        font-size: 1.25rem;
+        color: #1f2937;
+      }
+    }
+
+    .p-dialog-content {
+      padding: 1.5rem;
+    }
+
+    // 隱形捲軸美化
+    .overflow-y-auto {
+      scrollbar-width: thin;
+      scrollbar-color: #cbd5e1 transparent;
+
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: #cbd5e1;
+        border-radius: 20px;
+      }
+    }
+
+    // 卡片懸浮效果
+    .favorite-card {
+      &:hover {
+        transform: translateY(-2px);
+        border-color: #c7d2fe; // Hover 時邊框變成淡 Indigo
+      }
+    }
+  }
+}

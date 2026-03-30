@@ -1,0 +1,45 @@
+<div
+  class="gemini-layout flex h-screen w-screen overflow-hidden surface-ground"
+>
+  <aside
+    class="sidebar flex-none surface-50 flex flex-column border-right-1 surface-border transition-all transition-duration-300"
+    [style.width]="isSidebarVisible ? '16rem' : '0rem'"
+    [class.collapsed]="!isSidebarVisible"
+  >
+    <div
+      class="sidebar-content-wrapper w-16rem h-full flex flex-column flex-shrink-0"
+    >
+      <ng-content select="[sidebar]"></ng-content>
+    </div>
+  </aside>
+
+  <div
+    class="main-content flex-grow-1 flex flex-column relative surface-0 overflow-hidden shadow-1"
+  >
+    <header
+      class="chat-header flex-none border-bottom-1 surface-border surface-0 z-5 px-4 py-2 flex align-items-center gap-2"
+    >
+      <p-button
+        icon="pi pi-bars"
+        [text]="true"
+        [rounded]="true"
+        severity="secondary"
+        (onClick)="toggleSidebar()"
+        styleClass="w-3rem h-3rem"
+      >
+      </p-button>
+
+      <div class="flex-grow-1 flex align-items-center justify-content-between">
+        <ng-content select="[header]"></ng-content>
+      </div>
+    </header>
+
+    <main class="chat-messages flex-grow-1 overflow-hidden relative">
+      <ng-content select="[content]"></ng-content>
+    </main>
+
+    <footer class="chat-input flex-none surface-0 z-5 pb-4">
+      <ng-content select="[footer]"></ng-content>
+    </footer>
+  </div>
+</div>

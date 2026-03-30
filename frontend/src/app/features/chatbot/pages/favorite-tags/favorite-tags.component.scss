@@ -1,0 +1,24 @@
+// favorite-tag-dialog.component.scss
+
+::ng-deep {
+  .v-tag-dialog {
+    // 🗑️ 把那段高度 44px 鎖死的 CSS 全部刪除！讓 PrimeNG 自己對齊！
+
+    // --- 底部按鈕美化 (維持不變) ---
+    .p-dialog-footer {
+      .p-button.p-button-secondary.p-button-text {
+        color: #6b7280;
+        &:hover {
+          background: rgba(107, 114, 128, 0.05);
+          color: #374151;
+        }
+      }
+
+      .p-button-success {
+        border-radius: 8px;
+        padding: 0.6rem 1.5rem;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+      }
+    }
+  }
+}

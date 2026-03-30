@@ -1,0 +1,13 @@
+/* You can add global styles to this file, and also import other style files */
+/* 引入 PrimeNG 圖示庫 */
+@import "primeicons/primeicons.css";
+
+/* 引入 PrimeFlex 排版系統 */
+@import "primeflex/primeflex.scss";
+
+/* 確保整個網頁沒有白邊 */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+}

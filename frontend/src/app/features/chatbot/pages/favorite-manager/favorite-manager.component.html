@@ -1,0 +1,128 @@
+<p-dialog
+  header="收藏清單管理"
+  [(visible)]="visible"
+  (onHide)="closeDialog()"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="v-favorite-dialog"
+  [style]="{ width: '50vw', 'min-width': '600px', 'max-width': '900px' }"
+>
+  <div class="flex flex-column gap-4 pt-2 h-full">
+    <div class="p-input-icon-left w-full">
+      <i class="pi pi-search text-gray-400"></i>
+      <input
+        type="text"
+        pInputText
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearchChange()"
+        placeholder="搜尋問題、回答或標籤 (例如：CQRS)..."
+        class="w-full border-round-lg shadow-none surface-50 focus:surface-0 transition-colors duration-200"
+      />
+    </div>
+
+    <div
+      class="flex-grow-1 overflow-y-auto pr-2 relative"
+      style="max-height: 60vh"
+    >
+      @if (isLoading) {
+        <div
+          class="absolute top-0 left-0 w-full h-full flex align-items-center justify-content-center surface-0"
+          style="z-index: 10; opacity: 0.8"
+        >
+          <i class="pi pi-spin pi-spinner text-indigo-500 text-4xl"></i>
+        </div>
+      }
+
+      @if (displayFavorites.length === 0 && !isLoading) {
+        <div
+          class="flex flex-column align-items-center justify-content-center p-5 text-gray-400"
+        >
+          <i class="pi pi-inbox text-4xl mb-3 opacity-50"></i>
+          <span class="text-lg font-medium">找不到相關的收藏</span>
+          <span class="text-sm mt-1"
+            >試試其他關鍵字，或是去對話中收藏一些內容吧！</span
+          >
+        </div>
+      } @else {
+        <div class="flex flex-column gap-3">
+          @for (item of displayFavorites; track item.id) {
+            <div
+              class="favorite-card p-4 border-round-xl border-1 surface-border surface-0 transition-all duration-200 hover:shadow-2"
+            >
+              <div class="text-900 font-bold mb-2 flex align-items-start gap-2">
+                <i class="pi pi-user text-blue-500 mt-1"></i>
+                <div class="line-height-3">{{ item.question }}</div>
+              </div>
+
+              <div
+                class="text-600 mb-3 flex align-items-start gap-2 text-sm md:text-base"
+              >
+                <i class="pi pi-sparkles text-purple-500 mt-1"></i>
+                <div
+                  class="line-height-3 overflow-hidden text-overflow-ellipsis"
+                  style="
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                  "
+                >
+                  {{ item.answer }}
+                </div>
+              </div>
+
+              <div
+                class="flex align-items-center justify-content-between border-top-1 surface-border pt-3 mt-auto"
+              >
+                <div class="flex flex-wrap gap-2">
+                  @for (tag of item.tags; track tag) {
+                    <p-chip
+                      [label]="tag"
+                      styleClass="text-xs bg-indigo-50 text-indigo-600 border-none font-medium"
+                    ></p-chip>
+                  }
+                </div>
+
+                <div class="flex align-items-center gap-2 flex-none">
+                  <span class="text-xs text-gray-400 mr-2 hidden sm:block">{{
+                    item.createdAt | date: "MM/dd HH:mm"
+                  }}</span>
+
+                  <p-button
+                    icon="pi pi-pencil"
+                    [text]="true"
+                    [rounded]="true"
+                    severity="info"
+                    pTooltip="修改標籤"
+                    (onClick)="openEditTags(item)"
+                  ></p-button>
+                  <p-button
+                    icon="pi pi-external-link"
+                    [text]="true"
+                    [rounded]="true"
+                    severity="secondary"
+                    pTooltip="跳轉至對話"
+                    (onClick)="goToMessage(item.chatId)"
+                  ></p-button>
+                  <p-button
+                    icon="pi pi-trash"
+                    [text]="true"
+                    [rounded]="true"
+                    severity="danger"
+                    pTooltip="移除收藏"
+                    (onClick)="removeFavorite(item.id)"
+                  ></p-button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</p-dialog>
+<app-favorite-tag-editor
+  [(visible)]="showTagDialog"
+  [(tags)]="tempTags"
+  (onSave)="handleTagsUpdate()"
+></app-favorite-tag-editor>

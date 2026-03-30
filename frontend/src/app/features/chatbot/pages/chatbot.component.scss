@@ -1,0 +1,86 @@
+/* 🚀 處理標題在手機上的寬度，防止擠壓狀態列 */
+.chat-header-title {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  /* 當螢幕寬度 >= 768px (md) 時，解除寬度限制 */
+  @media screen and (min-width: 768px) {
+    max-width: none;
+  }
+}
+
+/* 🚀 確保訊息中的程式碼或長文字能自動換行，不撐破手機版畫面 */
+pre {
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+}
+
+/* 🚀 讓專家項目的「餵資料按鈕」在 Hover 時稍微變明顯 */
+.p-button-text.p-button-secondary:hover {
+  background-color: rgba(99, 102, 241, 0.1) !important; // 淡淡的 Indigo 色
+  color: #4f46e5 !important;
+}
+
+/* 🚀 強制移除對話區域的圓角 (對齊 Gemini 風格) */
+:host ::ng-deep .main-content {
+  border-radius: 0 !important;
+  margin: 0 !important;
+}
+
+/* 🚀 訊息行基礎佈局 */
+.message-row {
+  display: flex;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  gap: 0.75rem;
+
+  /* 🚀 User 訊息行：靠右對齊 */
+  &.user-row {
+    flex-direction: row-reverse;
+  }
+}
+
+.message-content {
+  display: flex;
+  flex-direction: column;
+  max-width: 75%; /* 🚀 限制最大寬度，避免泡泡撞到對面 */
+
+  &.user-content {
+    align-items: flex-end; /* 讓泡泡內的元素（如思考區）也靠右 */
+  }
+}
+
+/* 泡泡共同樣式 */
+.output-wrapper {
+  padding: 0.8rem 1.2rem;
+  border-radius: 1.2rem;
+  line-height: 1.6;
+  width: fit-content; /* 🚀 核心修正：讓泡泡根據文字寬度延伸 */
+  word-break: break-word;
+
+  &.bot {
+    background-color: var(--surface-100);
+    color: var(--text-color);
+    border-bottom-left-radius: 0.2rem;
+    text-align: left;
+  }
+
+  &.user {
+    // background-color: #3b82f6; /* 經典藍 */
+    // color: white;
+    border-bottom-right-radius: 0.2rem;
+    text-align: left; /* 🚀 即使泡泡在右邊，文字內容建議還是靠左讀 */
+  }
+
+  /* 🚀 修正 pre 標籤導致的寬度塌陷 */
+  pre {
+    margin: 0;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    width: 100%;
+    font-family: inherit;
+    font-size: 1rem;
+  }
+}

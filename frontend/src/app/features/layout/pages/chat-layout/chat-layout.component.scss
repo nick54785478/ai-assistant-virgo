@@ -1,0 +1,22 @@
+/* chat-layout.component.scss (修正版) */
+
+.gemini-layout {
+  background-color: var(--surface-ground);
+}
+
+.main-content {
+  /* 核心修改 1：移除圓角 (以前是 1.5rem 0 0 1.5rem) */
+  border-radius: 0 !important;
+
+  /* 核心修改 2：移除 margin (上下左右都貼齊) */
+  margin: 0 !important;
+
+  /* 加個細細的左邊框，區隔側邊欄 */
+  border-left: 1px solid var(--surface-border);
+  transition: all 0.3s ease;
+}
+
+/* 側邊欄收合時，主區域也不會有任何改變，保持貼齊 */
+.sidebar.collapsed + .main-content {
+  border-left: none !important;
+}

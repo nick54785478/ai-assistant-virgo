@@ -1,0 +1,82 @@
+<div
+  (click)="handleClick()"
+  class="flex align-items-center justify-content-between p-2 md:p-3 border-round-md cursor-pointer transition-all duration-200"
+  [ngClass]="
+    isSelected
+      ? 'bg-indigo-50 border-left-3 border-indigo-500 shadow-sm'
+      : 'hover:bg-white'
+  "
+>
+  <div class="flex align-items-center overflow-hidden">
+    <div class="mr-3 flex-none flex align-items-center">
+      <ng-content select="[avatar]"></ng-content>
+    </div>
+
+    <div class="flex flex-column overflow-hidden">
+      <span
+        class="text-sm font-bold text-900 white-space-nowrap overflow-hidden text-overflow-ellipsis"
+      >
+        {{ cardTitle }}
+      </span>
+      @if (cardSubtitle) {
+        <span
+          class="text-xs text-gray-500 hidden md:block white-space-nowrap overflow-hidden text-overflow-ellipsis"
+        >
+          {{ cardSubtitle }}
+        </span>
+      }
+    </div>
+  </div>
+
+  @if (showSpeedDial && isSelected) {
+    <div
+      class="flex-none ml-2 flex align-items-center"
+      (click)="$event.stopPropagation()"
+    >
+      <p-button
+        icon="pi pi-ellipsis-h"
+        [text]="true"
+        [rounded]="true"
+        severity="secondary"
+        styleClass="w-2rem h-2rem p-0 m-0"
+        (onClick)="op.toggle($event)"
+      ></p-button>
+
+      <p-popover #op appendTo="body" [style]="{ width: '150px' }">
+        <div class="flex flex-column gap-1">
+          <p-button
+            icon="pi pi-cloud-upload"
+            label="餵養知識"
+            [text]="true"
+            severity="secondary"
+            styleClass="w-full justify-content-start text-sm px-2 py-2"
+            (onClick)="executeAction('INGEST', op, $event)"
+          >
+          </p-button>
+
+          <p-button
+            icon="pi pi-star"
+            label="管理收藏"
+            [text]="true"
+            severity="secondary"
+            styleClass="w-full justify-content-start text-sm px-2 py-2"
+            (onClick)="executeAction('FAVORITES', op, $event)"
+          >
+          </p-button>
+
+          <div class="border-top-1 surface-border my-1 opacity-50"></div>
+
+          <p-button
+            icon="pi pi-history"
+            label="清除記憶"
+            [text]="true"
+            severity="danger"
+            styleClass="w-full justify-content-start text-sm px-2 py-2"
+            (onClick)="executeAction('CLEAR', op, $event)"
+          >
+          </p-button>
+        </div>
+      </p-popover>
+    </div>
+  }
+</div>
