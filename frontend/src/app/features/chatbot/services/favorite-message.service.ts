@@ -29,13 +29,14 @@ export class FavoriteMessageService {
     question: string,
     answer: string,
     tags: string[] = [],
+    chatId: string,
   ): Observable<FavoriteSavedResource> {
     // Payload 現在對齊後端的 SaveFavoriteResource
     const payload = {
       question,
       answer,
       tags,
-      chatId: 'default-session', // 未來可根據需求替換為真實會話 ID
+      chatId: chatId, // 未來可根據需求替換為真實會話 ID
     };
 
     return this.http.post<FavoriteSavedResource>(this.baseUrl, payload);

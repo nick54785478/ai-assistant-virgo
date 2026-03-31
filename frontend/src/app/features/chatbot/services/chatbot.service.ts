@@ -77,6 +77,15 @@ export class ChatbotService {
       // 先給一個空陣列，避免畫面報錯
       this.chatHistories.set(mode, []);
 
+      //  修正：加入完整的模式名稱對應，避免系統訊息誤報
+      let modeName = '通用 AI 助手';
+      if (mode === 'EXPERT_DDD') {
+        modeName = 'DDD 架構專家 - Virgo';
+      }
+      if (mode === 'EXPERT_GEMINI') {
+        modeName = '雲端架構大腦 - Gemini';
+      }
+
       // 呼叫後端 API 撈取歷史紀錄
       this.http
         .get<ChatHistoryGettenResource>(
@@ -100,8 +109,8 @@ export class ChatbotService {
           },
           error: (err) => {
             console.error('獲取歷史紀錄失敗', err);
-            const modeName =
-              mode === 'EXPERT_DDD' ? 'DDD 架構專家 - Virgo' : '通用 AI 助手';
+            // const modeName =
+            //   mode === 'EXPERT_DDD' ? 'DDD 架構專家 - Virgo' : '通用 AI 助手';
             this.addSystemMessage(
               `🟢 已切換至 [${modeName}] (歷史紀錄讀取失敗，請檢查連線)。`,
             );

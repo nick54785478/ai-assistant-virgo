@@ -82,11 +82,19 @@ export class ChatbotComponent implements OnInit, OnDestroy {
       name: '通用 AI 助手',
       desc: '通用模式',
       icon: 'pi pi-box',
+      hasMenu: false, // 通用助手不需要進階選單 (例如沒有知識庫可以 Ingest)
     },
     EXPERT_DDD: {
       name: 'DDD 架構專家 - Virgo',
       desc: '已載入核心領域規範 (RAG)',
       icon: 'pi pi-sitemap',
+      hasMenu: true, // 需要進階選單
+    },
+    EXPERT_GEMINI: {
+      name: '雲端架構大腦 - Gemini',
+      desc: '高邏輯推理與超大文本分析',
+      icon: 'pi pi-cloud',
+      hasMenu: true, // Gemini 也需要進階選單 (查看收藏等)
     },
   };
 
@@ -150,6 +158,16 @@ export class ChatbotComponent implements OnInit, OnDestroy {
       this.chatSub.unsubscribe();
     }
     this.chatbotService.disconnect();
+  }
+
+  /**
+   * 將 expertInfo 物件轉換為陣列，供 HTML 的 @for 迴圈使用
+   */
+  get expertList() {
+    return Object.entries(this.expertInfo).map(([key, value]) => ({
+      modeId: key,
+      ...value,
+    }));
   }
 
   /**
@@ -229,7 +247,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
 
     // 呼叫 Service 寫入後端 DB
     this.favoriteService
-      .saveFavorite(question, answer, this.pendingTags)
+      .saveFavorite(question, answer, this.pendingTags, this.selectedMode)
       .subscribe({
         next: (res) => {
           // 更新 UI 狀態：點亮星星、綁定 DB 主鍵 ID
@@ -310,20 +328,28 @@ export class ChatbotComponent implements OnInit, OnDestroy {
       });
   }
 
+  /**
+   * <b>一鍵快速加入收藏 (不帶自定義標籤)</b>
+   */
   addFavorite(cell: ChatCell) {
     const contentToSave = cell.data.outputText || cell.data.rawText;
     if (!contentToSave || cell.meta.isFavoriteLoading) return;
 
+    // 🚀 修正 1：利用我們寫好的演算法，往前找尋真正的「使用者提問」，而不是存入 'bot'
+    const question = this.findLastUserQuestion(cell);
+
     cell.meta.isFavoriteLoading = true;
     this.cd.detectChanges();
 
+    // 🚀 修正 2：對齊 API 規格 (問題, 回答, 空標籤陣列, 當前模式)
     this.favoriteService
-      .saveFavorite(cell.data.sender, contentToSave)
+      .saveFavorite(question, contentToSave, [], this.selectedMode)
       .subscribe({
         next: (res) => {
           cell.meta.isFavorited = true;
           cell.meta.favoriteId = res.id;
           cell.meta.isFavoriteLoading = false;
+
           this.sysMsgService.showSuccess(
             '已加入收藏',
             `這則訊息已安全存檔 (ID: #${res.id})。`,

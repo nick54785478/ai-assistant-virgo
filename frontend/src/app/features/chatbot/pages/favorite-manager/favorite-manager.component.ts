@@ -52,6 +52,9 @@ export class FavoriteManagerComponent implements OnInit, OnDestroy {
     return this._visible;
   }
 
+  // 🚀 最小變更 1：新增 Input 接收當前 AI 模式
+  @Input() currentMode: string = 'GENERAL';
+
   showTagDialog = false;
   tempTags: string[] = []; // 編輯中的暫存標籤
   editingId: number | null = null; // 紀錄正在改哪一筆
@@ -67,9 +70,9 @@ export class FavoriteManagerComponent implements OnInit, OnDestroy {
   rows: number = 5;
   totalRecords: number = 0;
   isLoading: boolean = false; // 載入狀態
-  displayFavorites: FavoriteItem[] = []; // 實際顯示資料
+  displayFavorites: any[] = []; // 實際顯示資料 (替換成你的 FavoriteItem)
 
-  constructor(private favoriteService: FavoriteMessageService) {}
+  constructor(private favoriteService: FavoriteMessageService) {} // 替換成你的 FavoriteMessageService
 
   ngOnInit() {
     // RxJS 魔法：延遲 500ms 且字串有變動才發送 API 請求
@@ -92,14 +95,14 @@ export class FavoriteManagerComponent implements OnInit, OnDestroy {
     const page = Math.floor(this.first / this.rows);
 
     this.favoriteService
-      .getFavorites(this.searchQuery, '', page, this.rows)
+      .getFavorites(this.searchQuery, this.currentMode, page, this.rows)
       .subscribe({
-        next: (res) => {
+        next: (res: any) => {
           this.displayFavorites = res.data.content;
           this.totalRecords = res.data.totalElements;
           this.isLoading = false;
         },
-        error: (err) => {
+        error: (err: any) => {
           console.error('讀取收藏失敗', err);
           this.isLoading = false;
         },
@@ -135,7 +138,8 @@ export class FavoriteManagerComponent implements OnInit, OnDestroy {
   }
 
   // 打開編輯標籤彈窗
-  openEditTags(item: FavoriteItem) {
+  openEditTags(item: any) {
+    // 替換成你的 FavoriteItem
     this.editingId = item.id;
     this.tempTags = [...item.tags]; // 深拷貝，避免直接動到列表資料
     this.showTagDialog = true;
@@ -151,7 +155,7 @@ export class FavoriteManagerComponent implements OnInit, OnDestroy {
         this.loadFavorites(); // 重新整理清單
         // 可以加上一個 Toast 通知「更新成功」
       },
-      error: (err) => console.error('更新標籤失敗', err),
+      error: (err: any) => console.error('更新標籤失敗', err),
     });
   }
 }
