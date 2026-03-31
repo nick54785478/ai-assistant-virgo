@@ -4,7 +4,9 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
+import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.prompt.ChatOptions;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -51,16 +53,33 @@ public class AiConfiguration {
 	 * 將 Advisor (記憶體攔截器) 與底層模型參數 (Token 上限) 進行封裝。
 	 * </p>
 	 */
-	@Bean
-	public ChatClient deepseekChatClient(ChatClient.Builder builder, ChatMemory chatMemory) {
-		// 建立記憶體顧問，使其能在每次請求時自動附加歷史上下文
+	@Bean("deepseekChatClient")
+	public ChatClient deepseekChatClient(@Qualifier("ollamaChatModel") ChatModel ollamaModel, ChatMemory chatMemory) {
+
 		MessageChatMemoryAdvisor advisor = MessageChatMemoryAdvisor.builder(chatMemory).build();
 
-		return builder.defaultSystem("你是一個全能百科全書...")
-				// 使用通用的 ChatOptions，專注解決「斷頭」問題
-				.defaultOptions(ChatOptions.builder()
-						// 關鍵防禦：徹底解除 Token 長度封印，解決模型話講一半「斷頭」的問題
-						.maxTokens(8192).build())
+		// 自己用 ollamaModel 產生專屬的 Builder
+		return ChatClient.builder(ollamaModel).defaultSystem("你是一個全能百科全書...")
+				.defaultOptions(ChatOptions.builder().maxTokens(8192) // 解除 Token 封印
+						.build())
+				.defaultAdvisors(advisor) // 配置記憶紀錄器
+				.build();
+	}
+
+	/**
+	 * <b>配置 Gemini 雲端大腦 (Google Gen AI)</b> 🚀 解法：透過 @Qualifier 精準注入
+	 * googleGenAiChatModel
+	 */
+	@Bean("geminiChatClient")
+	public ChatClient geminiChatClient(@Qualifier("googleGenAiChatModel") ChatModel geminiModel,
+			ChatMemory chatMemory) {
+
+		// 產生記憶體攔截器
+		MessageChatMemoryAdvisor advisor = MessageChatMemoryAdvisor.builder(chatMemory).build();
+
+		// 自己用 geminiModel 產生專屬的 Builder
+		return ChatClient.builder(geminiModel)
+				.defaultSystem("你是一位具備頂級邏輯推理能力的雲端架構大腦，名為 Gemini。請以專業、精準且富有同理心的語氣協助使用者解決最複雜的問題。")
 				.defaultAdvisors(advisor).build();
 	}
 
