@@ -67,8 +67,8 @@ public class AiConfiguration {
 	}
 
 	/**
-	 * <b>配置 Gemini 雲端大腦 (Google Gen AI)</b> 🚀 解法：透過 @Qualifier 精準注入
-	 * googleGenAiChatModel
+	 * <b>配置 Gemini 雲端大腦 (Google Gen AI)</b> 
+	 * 解法：透過 @Qualifier 精準注入 googleGenAiChatModel，以區隔相關模型
 	 */
 	@Bean("geminiChatClient")
 	public ChatClient geminiChatClient(@Qualifier("googleGenAiChatModel") ChatModel geminiModel,
