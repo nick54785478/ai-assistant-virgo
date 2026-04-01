@@ -229,6 +229,17 @@
                     class="flex gap-2 mt-1 opacity-60 hover:opacity-100 transition-all"
                   >
                     <p-button
+                      icon="pi pi-refresh"
+                      [text]="true"
+                      [rounded]="true"
+                      severity="secondary"
+                      styleClass="p-0 w-2rem h-2rem"
+                      (onClick)="resendMessage(cell)"
+                      pTooltip="重新生成回答"
+                      [disabled]="isLoading"
+                    >
+                    </p-button>
+                    <p-button
                       icon="pi pi-copy"
                       [text]="true"
                       [rounded]="true"

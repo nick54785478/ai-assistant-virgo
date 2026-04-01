@@ -433,4 +433,25 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         console.warn('【系統警告】未知的模型操作指令:', action);
     }
   }
+
+  /**
+   * <b>重新生成回答 (Resend)</b>
+   * <p>找出觸發此回答的原始提問，並再次發送給 AI 進行推論。</p>
+   */
+  resendMessage(cell: ChatCell) {
+    if (this.isLoading) return; // 如果 AI 正在思考，鎖定按鈕避免重複觸發
+
+    const question = this.findLastUserQuestion(cell);
+    
+    if (question && question !== '無提問脈絡') {
+      // 🚀 直接委派給 Service 再次發送問題
+      this.chatbotService.sendMessage(question);
+      this.isLoading = true;
+      this.scrollToBottom();
+      
+      this.sysMsgService.showSuccess('重新生成中', '已重新發送您的提問...');
+    } else {
+      this.sysMsgService.showError('無法重新生成', '找不到對應的歷史提問脈絡');
+    }
+  }
 }
