@@ -444,7 +444,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     const question = this.findLastUserQuestion(cell);
     
     if (question && question !== '無提問脈絡') {
-      // 🚀 直接委派給 Service 再次發送問題
+      // 直接委派給 Service 再次發送問題
       this.chatbotService.sendMessage(question);
       this.isLoading = true;
       this.scrollToBottom();
