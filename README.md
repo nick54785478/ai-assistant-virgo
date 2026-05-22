@@ -1,8 +1,13 @@
-# ♍ Virgo - 領域驅動 AI 助手 (Enterprise Domain-Driven AI Assistant)
+# ♍ Virgo - 領域驅動 AI 助手 (Domain-Driven Design AI Assistant)
 
 Virgo 是一個基於 本地端大型語言模型 (Local LLM) 與 檢索增強生成 (RAG) 技術所打造的智能助手，此專案採用嚴謹的 六角架構 (Hexagonal Architecture) 與 領域驅動設計 (DDD) 開發，旨在提供一個高隱私、高穩定且具備多模式切換能力的 AI 基礎設施。
 
 **為什麼取名Virgo? 主要是因為協助我建置的 AI 是 Gemini (雙子座)，所以想說取個星座名，再加上我是處女座 (Virgo)，就這樣取囉**
+
+此專案裡面共有三個角色:
+>1. 通用的 AI 助手 : 基於 DeepSeek-R1 未經訓練的 (可供我們自行訓練)。
+>2. DDD 架構專家 - Virgo :  基於 DeepSeek-R1 未經訓練的 (可讓我們將專案內相關的知識餵給他，主要是要與上面通用助手比較)。
+>3. 雲端架構大腦 - Gemini : 主要基於 Gemini 的雲端大腦，相對上面兩者聰明，可自行搭配訓練。
 
 
 
