@@ -5,8 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.example.demo.infra.shared.exception.exception.ResourceNotFoundException;
-import com.example.demo.infra.shared.exception.exception.ValidationException;
+import com.example.demo.infra.shared.exception.ResourceNotFoundException;
+import com.example.demo.infra.shared.exception.ValidationException;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
