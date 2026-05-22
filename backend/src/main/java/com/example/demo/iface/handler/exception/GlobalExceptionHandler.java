@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.example.demo.infra.shared.exception.exception.ResourceNotFoundException;
 import com.example.demo.infra.shared.exception.exception.ValidationException;
-import com.example.demo.infra.shared.exception.response.BaseExceptionResponse;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 全域例外處理器
@@ -25,4 +28,17 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.OK).body(new BaseExceptionResponse(e.getCode(), e.getMessage()));
 	}
 
+	/**
+	 * 回傳訊息定義
+	 */
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	class BaseExceptionResponse {
+
+		private String code;
+
+		private String message;
+
+	}
 }

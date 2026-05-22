@@ -15,10 +15,10 @@ import lombok.NoArgsConstructor;
 
 /**
  * <b>知識文檔處理紀錄</b>
- * <p>
+ * <pre>
  * 本實體用於追蹤已成功向量化 (Embedded) 並存入 Vector Store 的文件元數據。
  * 主要用途為實現「分散式進食邏輯」的冪等性檢查，避免重複消耗 AI Token 資源。
- * </p>
+ * </pre>
  */
 @Entity
 @Getter

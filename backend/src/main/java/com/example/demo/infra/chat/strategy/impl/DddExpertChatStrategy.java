@@ -10,9 +10,11 @@ import reactor.core.publisher.Flux;
 
 /**
  * <b>DDD 領域專家策略</b>
- * <p>
- * 專門處理具備 RAG (檢索增強生成) 能力的對話。 它會先去 VectorStore 撈取技術規範，再交給 LLM 進行回答。
- * </p>
+ * 
+ * <pre>
+ * 專門處理具備 RAG (檢索增強生成) 能力的對話。 
+ * 它會先去 VectorStore 撈取技術規範，再交給 LLM 進行回答。
+ * </pre>
  */
 @Service
 @RequiredArgsConstructor

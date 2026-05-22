@@ -10,9 +10,9 @@ import reactor.core.publisher.Flux;
 
 /**
  * <b>[維運實作] 雲端大腦策略 (Gemini)</b>
- * <p>
+ * <pre>
  * 當前端傳入 EXPERT_GEMINI 模式時，會自動路由至此策略進行雲端推理。
- * </p>
+ * </pre>
  */
 @Service
 @RequiredArgsConstructor

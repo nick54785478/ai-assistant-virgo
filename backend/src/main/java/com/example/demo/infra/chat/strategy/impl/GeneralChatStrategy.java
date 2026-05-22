@@ -10,9 +10,9 @@ import reactor.core.publisher.Flux;
 
 /**
  * <b>通用 AI 助手策略</b>
- * <p>
+ * <pre>
  * 最基礎的對話模式，直接與底層 AI 模型進行互動，不掛載額外的知識庫。
- * </p>
+ * </pre>
  */
 @Service
 @RequiredArgsConstructor

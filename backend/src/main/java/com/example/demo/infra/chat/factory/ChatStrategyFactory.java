@@ -10,10 +10,10 @@ import com.example.demo.infra.chat.strategy.ChatStreamStrategy;
 
 /**
  * <b>聊天策略工廠</b>
- * <p>
- * 利用 Spring 的依賴注入特性，在啟動時自動蒐集所有 {@link ChatStreamStrategy} 的實作類。 負責根據前端傳入的模式
- * (Mode) 字串，精準分派對應的處理邏輯。
- * </p>
+ * <pre>
+ * 利用 Spring 的依賴注入特性，在啟動時自動蒐集所有 {@link ChatStreamStrategy} 的實作類。 
+ * 負責根據前端傳入的模式 (Mode) 字串，精準分派對應的處理邏輯。
+ * </pre>
  */
 @Component
 public class ChatStrategyFactory {
